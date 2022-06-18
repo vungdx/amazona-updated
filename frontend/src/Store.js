@@ -90,7 +90,6 @@ function reducer(state, action) {
 export function StoreProvider(props) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const value = { state, dispatch };
-  console.log("value lấy ra store", value);
   return <Store.Provider value={value}>{props.children}</Store.Provider>;
   // Provider component có 1 props mặc định là value nhận dữ liệu A nào đó
   // => toàn bộ các Children component của Provider component này sẽ nhận được dữ liệu A này

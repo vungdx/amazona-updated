@@ -33,6 +33,16 @@ productRouter.get(
         : {};
 
     const categoryFilter = category && category !== "all" ? { category } : {};
+    // comparition query operator
+    // $gt: greater than
+    // $gte: greater than equal
+    // $lt: less than
+    // $lte: less than equal
+    // $eq: equal
+    // $ne: not equal
+    // $in: []
+    // $nin: 
+
     const ratingFilter =
       rating && rating !== "all"
         ? {

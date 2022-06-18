@@ -179,7 +179,7 @@ function SearchScreen(props) {
             <h3>Avg. Customer Review</h3>
             <ul>
               {ratings.map((r) => (
-                <li>
+                <li key={r.rating}>
                   <Link
                     to={getFilterUrl({ rating: r.rating })}
                     className={`${r.rating}` === `${rating}` ? "text-bold" : ""}
