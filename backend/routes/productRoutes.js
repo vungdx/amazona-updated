@@ -34,6 +34,30 @@ productRouter.get(
     });
   })
 );
+
+productRouter.post(
+  "/",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const newProduct = new Product({
+      name: "Sample name" + Date.now(),
+      slug: "Sample-name-" + Date.now(),
+      image: "/images/p1.jpg",
+      price: 0,
+      category: "sample category",
+      brand: "sample brand",
+      countInStock: 0,
+      rating: 0,
+      numReviews: 0,
+      description: "sample description",
+    });
+
+    const product = await newProduct.save();
+    res.send({ message: "Product Created", product });
+  })
+);
+
 productRouter.get(
   "/search",
   expressAsyncHandler(async (req, res) => {
