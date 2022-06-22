@@ -2,13 +2,14 @@ import { createContext, useReducer } from "react";
 export const Store = createContext(); // => Provider(dùng cho comp Cha);
 
 const initialState = {
+  fullBox: false,
   userInfo: localStorage.getItem("userInfo")
     ? JSON.parse(localStorage.getItem("userInfo"))
     : null,
   cart: {
     shippingAddress: localStorage.getItem("shippingAddress")
       ? JSON.parse(localStorage.getItem("shippingAddress"))
-      : {},
+      : { location: {} },
     paymentMethod: localStorage.getItem("paymentMethod")
       ? JSON.parse(localStorage.getItem("paymentMethod"))
       : "",
@@ -20,6 +21,10 @@ const initialState = {
 
 function reducer(state, action) {
   switch (action.type) {
+    case "SET_FULLBOX_ON":
+      return { ...state, fullBox: true };
+    case "SET_FULLBOX_OFF":
+      return { ...state, fullBox: false };
     case "CART_ADD_ITEM": {
       const newItem = action.payload;
       const existItem = state.cart.cartItems.find(
@@ -41,6 +46,18 @@ function reducer(state, action) {
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
       return { ...state, cart: { ...state.cart, cartItems } };
     }
+
+    case "SAVE_SHIPPING_ADDRESS_MAP_LOCATION":
+      return {
+        ...state,
+        cart: {
+          ...state.cart,
+          shippingAddress: {
+            ...state.cart.shippingAddress,
+            location: action.payload,
+          },
+        },
+      };
 
     case "USER_SIGNIN": {
       return { ...state, userInfo: action.payload };
