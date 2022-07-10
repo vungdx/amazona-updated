@@ -55,7 +55,11 @@ function OrderScreen(props) {
   function createOrder(data, actions) {
     return actions.order
       .create({
-        purchase_units: [{ amount: { value: order.totalPrice } }],
+        purchase_units: [
+          {
+            amount: { value: order.totalPrice },
+          },
+        ],
       })
       .then((orderID) => {
         return orderID;
@@ -65,7 +69,7 @@ function OrderScreen(props) {
   function onApprove(data, actions) {
     return actions.order.capture().then(async function (details) {
       try {
-        dispatch({ type: "PAY_REQUEST" });
+        dispatch({ type: 'PAY_REQUEST' });
         const { data } = await axios.put(
           `/api/orders/${order._id}/pay`,
           details,
@@ -73,10 +77,10 @@ function OrderScreen(props) {
             headers: { authorization: `Bearer ${userInfo.token}` },
           }
         );
-        dispatch({ type: "PAY_SUCCESS", payload: data });
-        toast.success("Order is paid");
+        dispatch({ type: 'PAY_SUCCESS', payload: data });
+        toast.success('Order is paid');
       } catch (err) {
-        dispatch({ type: "PAY_FAIL", payload: getError(err) });
+        dispatch({ type: 'PAY_FAIL', payload: getError(err) });
         toast.error(getError(err));
       }
     });
@@ -143,6 +147,14 @@ function OrderScreen(props) {
                 <strong>Address:</strong> {order.shippingAddress.address} <br />
                 {order.shippingAddress.city}, {order.shippingAddress.postalCode}
                 ,{order.shippingAddress.country}
+                &nbsp;
+                {order.shippingAddress.location && 
+                  order.shippingAddress.location.lat && (
+                    <a target="_new" href={`https://maps.google.com?q=${order.shippingAddress.location.lat}, ${order.shippingAddress.location.lng}`}>
+                      Show on MAp
+                    </a>
+                  )
+                }
               </Card.Text>
               {order.isDelivered ? (
                 <MessageBox variant="success">
